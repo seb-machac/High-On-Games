@@ -1,49 +1,86 @@
 extends Node2D
-#test
+
 @export var rest_length = 200.0
 @export var stiffness = 15.0
 @export var damping = 1.0
-@export var max_distance = 10000.0
+@export var max_distance = 800.0
 
-@onready var ray_cast_2d_2: RayCast2D = $RayCast2D2
 @onready var player := get_parent()
-@onready var ray := $RayCast2D
-@onready var rope := $Line2D
+@onready var ray := $Ray
+@onready var rope := $Rope
 @onready var hook := $Sprite2D
+@onready var debug_line: Line2D = $debug_line
+@onready var animation_player: AnimationPlayer = $"../Sprite2D/AnimationPlayer"
+@onready var debug_point_1: Sprite2D = $debug_point_1
+@onready var debug_point_2: Sprite2D = $debug_point_2
+@onready var debug_point_3: Sprite2D = $debug_point_3
+@onready var playernode: CharacterBody2D = $".."
+@onready var detection: RayCast2D = $Detection
 
 var targetpoint
 var launched = false
 var target: Vector2
+var distance = 0
+var distancestr = "0"
+var leftover_rope = "Leftover rope: ∞m"
+var ui_output = "None"
+
+func _ready() -> void:
+	animation_player.play("blink")
 
 
 func _process(delta):
+	targetpoint = Vector2(ray.get_collision_point().x, ray.get_collision_point().y).normalized()
+	debug_line.set_point_position(1, to_local(get_global_mouse_position()))
+	if detection.get_collision_point() == ray.get_collision_point():
+		ui_output = "Can shoot"
+	else:
+		ui_output = "Cant shoot"
+	if debug_line.points[0].distance_to(debug_line.points[1]) > max_distance:
+		debug_line.hide()
+	else:
+		debug_line.show()
 	ray.look_at(get_global_mouse_position())
+	detection.look_at(get_global_mouse_position())
 	if Input.is_action_just_pressed("grapple"):
 		launch()
 	if Input.is_action_just_released("grapple"):
 		retract()
 	if launched:
 		handle_grapple(delta)
+	if ray.is_colliding():
+		distance = to_local(ray.get_collision_point()).distance_to(player.global_position)
+		distancestr = "Distance: "+ str(int(distance)) +"m"
+		debug_point_1.global_position = ray.get_collision_point()
+		debug_point_2.global_position = detection.get_collision_point()
+	else:
+		distancestr = "Distance: ∞m"
+
 
 func launch():
-	targetpoint = Vector2(ray.get_collision_point().x, ray.get_collision_point().y).normalized() * 3
-	var distance = (targetpoint - ray.global_position).length()
-	print(distance)
 	if ray.is_colliding() and distance < max_distance:
-		hook.visible = true
-		launched = true
-		target = ray.get_collision_point()
-		rope.show()
+		if detection.get_collision_point() == ray.get_collision_point():
+			debug_point_2.global_position = detection.get_collision_point()
+			debug_point_3.global_position = ray.get_collision_point()
+			leftover_rope = "Leftover rope: "+str(max_distance-distance)+"m"
+			hook.visible = true
+			launched = true
+			target = ray.get_collision_point()
+			rope.show()
+	else:
+		launched = false
+
 
 func retract():
 	launched = false
 	rope.hide()
 	hook.visible = false
+	leftover_rope = "Leftover rope: ∞m"
+
 
 func handle_grapple(delta):
 	var target_dir = player.global_position.direction_to(target)
 	var target_dist = player.global_position.distance_to(target)
-	
 	var displacement = target_dist - rest_length
 	
 	var force = Vector2.ZERO
@@ -60,6 +97,7 @@ func handle_grapple(delta):
 	
 	player.velocity += force * delta
 	update_rope()
+
 
 func update_rope():
 	rope.set_point_position(1, to_local(target))
