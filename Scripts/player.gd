@@ -7,13 +7,17 @@ const DECELERATION = 0.1
 
 @onready var gc := $GrappleController
 
+var jumping = false
+
 func _physics_process(delta):
 	if not is_on_floor():
+		jumping = false
 		velocity += get_gravity() * delta
 	
-	if Input.is_action_just_pressed("jump") && (is_on_floor() || gc.launched):
+	if Input.is_action_just_pressed("jump") && is_on_floor() && !jumping:
 		velocity.y += JUMP_VELOCITY
-		gc.retract()
+		jumping = true
+		#gc.retract()
 	
 	var direction = Input.get_axis("left", "right")
 	if direction:
@@ -27,3 +31,7 @@ func _physics_process(delta):
 func _input(event):
 	if event.is_action_pressed("Escape"):
 		get_tree().quit()
+	if event.is_action_pressed("Reset"):
+		gc.retract()
+		position.x = 550
+		position.y = 0
