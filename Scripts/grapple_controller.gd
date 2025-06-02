@@ -16,6 +16,7 @@ extends Node2D
 @onready var debug_point_3: Sprite2D = $debug_point_3
 @onready var playernode: CharacterBody2D = $".."
 @onready var detection: RayCast2D = $Detection
+@onready var detection_line: Line2D = $Detection/detection_line
 
 var targetpoint
 var launched = false
@@ -23,7 +24,9 @@ var target: Vector2
 var distance = 0
 var distancestr = "0"
 var leftover_rope = "Leftover rope: ∞m"
-var ui_output = "None"
+var ui_output_1 = "None"
+var ui_output_2 = "None"
+
 
 func _ready() -> void:
 	animation_player.play("blink")
@@ -31,11 +34,11 @@ func _ready() -> void:
 
 func _process(delta):
 	targetpoint = Vector2(ray.get_collision_point().x, ray.get_collision_point().y).normalized()
-	debug_line.set_point_position(1, to_local(get_global_mouse_position()))
-	if detection.get_collision_point() == ray.get_collision_point():
-		ui_output = "Can shoot"
+	detection_line.set_point_position(1, get_global_mouse_position())
+	if !detection.is_colliding() || detection.get_collision_point() != ray.get_collision_point():
+		ui_output_2 = "Cant shoot"
 	else:
-		ui_output = "Cant shoot"
+		ui_output_2 = "Can shoot"
 	if debug_line.points[0].distance_to(debug_line.points[1]) > max_distance:
 		debug_line.hide()
 	else:

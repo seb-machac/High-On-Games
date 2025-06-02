@@ -59,14 +59,14 @@ layout_mode = 2
 [node name="velocitylabel" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
 
-[node name="Console" type="Label" parent="Control/VBoxContainer"]
+[node name="ui_output_1" type="Label" parent="Control/VBoxContainer"]
+layout_mode = 2
+
+[node name="ui_output_2" type="Label" parent="Control/VBoxContainer"]
 layout_mode = 2
 
 [node name="Player" parent="." instance=ExtResource("1_b05ko")]
 position = Vector2(550, 0)
-
-[node name="GrappleController" parent="Player" index="2"]
-max_distance = 1000.0
 
 [node name="Detection" parent="Player/GrappleController" index="1"]
 collision_mask = 3

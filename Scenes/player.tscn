@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbfsd2kstam7a"]
+[gd_scene load_steps=14 format=3 uid="uid://cbfsd2kstam7a"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_40d0q"]
 [ext_resource type="Texture2D" uid="uid://oaeqd2votei5" path="res://assets/samplecharacter.png" id="2_2l4pn"]
 [ext_resource type="Script" path="res://Scripts/grapple_controller.gd" id="3_jc1bc"]
 [ext_resource type="Texture2D" uid="uid://bkwj6q71hkxgh" path="res://assets/arror.png" id="4_5q5m2"]
 [ext_resource type="Texture2D" uid="uid://bghx6dsg57y56" path="res://assets/rope.png" id="4_vkmna"]
+[ext_resource type="Texture2D" uid="uid://bcnmdtksfbxt4" path="res://assets/debug_line_1.png" id="5_lnsk3"]
 [ext_resource type="Texture2D" uid="uid://dtrpljdbnu7ke" path="res://assets/debug_point_3.png" id="6_5yimb"]
 [ext_resource type="Texture2D" uid="uid://cffk1ori5w8a8" path="res://assets/debug_point_1.png" id="6_n6ia2"]
 [ext_resource type="Texture2D" uid="uid://dlmuu0ymrahax" path="res://assets/debug_point_2.png" id="7_1yv0o"]
@@ -78,6 +79,13 @@ target_position = Vector2(10000, 0)
 
 [node name="Detection" type="RayCast2D" parent="GrappleController"]
 target_position = Vector2(10000, 0)
+
+[node name="detection_line" type="Line2D" parent="GrappleController/Detection"]
+visible = false
+points = PackedVector2Array(0, 0, 1000, 0)
+width = 30.0
+texture = ExtResource("5_lnsk3")
+texture_mode = 1
 
 [node name="Rope" type="Line2D" parent="GrappleController"]
 visibility_layer = 8

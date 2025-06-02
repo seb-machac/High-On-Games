@@ -7,10 +7,14 @@ extends Control
 @onready var rope_left: Label = $VBoxContainer/rope_left
 @onready var velocitylabel: Label = $VBoxContainer/velocitylabel
 @onready var player: CharacterBody2D = $"../Player"
-@onready var console: Label = $VBoxContainer/Console
+@onready var ui_output_1: Label = $VBoxContainer/ui_output_1
+@onready var ui_output_2: Label = $VBoxContainer/ui_output_2
 @onready var control: Control = $"."
+@onready var debug_point_1: Sprite2D = $"../Player/GrappleController/debug_point_1"
+@onready var debug_point_2: Sprite2D = $"../Player/GrappleController/debug_point_2"
+@onready var debug_point_3: Sprite2D = $"../Player/GrappleController/debug_point_3"
 
-var debug_hidden = false
+var debug_mode = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,15 +24,22 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Debug"):
-		debug_hidden = not debug_hidden
-		if debug_hidden == true:
-			control.visible = false
-		else:
+		debug_mode = not debug_mode
+		if debug_mode:
 			control.visible = true
+			debug_point_1.visible = true
+			debug_point_2.visible = true
+			debug_point_3.visible = true
+		else:
+			control.visible = false
+			debug_point_1.visible = false
+			debug_point_2.visible = false
+			debug_point_3.visible = false
 			
 	distance.text = str(grapple_controller.distancestr)
 	max_distance.text = "Max Distance: "+str(grapple_controller.max_distance)+"m"
 	rope_left.text = grapple_controller.leftover_rope
 	velocitylabel.text = "Velocity: " +str(int(player.velocity.length()))
-	console.text = grapple_controller.ui_output
+	ui_output_1.text = grapple_controller.ui_output_1
+	ui_output_2.text = grapple_controller.ui_output_2
 	
