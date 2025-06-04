@@ -10,13 +10,13 @@ extends Node2D
 @onready var rope := $Rope
 @onready var hook := $Sprite2D
 @onready var debug_line: Line2D = $debug_line
-@onready var animation_player: AnimationPlayer = $"../Sprite2D/AnimationPlayer"
 @onready var debug_point_1: Sprite2D = $debug_point_1
 @onready var debug_point_2: Sprite2D = $debug_point_2
 @onready var debug_point_3: Sprite2D = $debug_point_3
 @onready var playernode: CharacterBody2D = $".."
 @onready var detection: RayCast2D = $Detection
 @onready var detection_line: Line2D = $Detection/detection_line
+@onready var hookanim: AnimationPlayer = $"../Hooksprite/AnimationPlayer"
 
 var targetpoint
 var launched = false
@@ -28,13 +28,8 @@ var ui_output_1 = "None"
 var ui_output_2 = "None"
 
 
-func _ready() -> void:
-	animation_player.play("blink")
-
-
 func _process(delta):
 	targetpoint = Vector2(ray.get_collision_point().x, ray.get_collision_point().y).normalized()
-	detection_line.set_point_position(1, get_global_mouse_position())
 	if !detection.is_colliding() || detection.get_collision_point() != ray.get_collision_point():
 		ui_output_2 = "Cant shoot"
 	else:
@@ -61,6 +56,7 @@ func _process(delta):
 
 
 func launch():
+	hookanim.play("Rotate")
 	if ray.is_colliding() and distance < max_distance:
 		if detection.get_collision_point() == ray.get_collision_point():
 			debug_point_2.global_position = detection.get_collision_point()
@@ -75,6 +71,7 @@ func launch():
 
 
 func retract():
+	hookanim.play("RESET")
 	launched = false
 	rope.hide()
 	hook.visible = false

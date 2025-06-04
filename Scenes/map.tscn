@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=4 uid="uid://d00mu5b3nxsuw"]
 
-[ext_resource type="TileSet" uid="uid://hfqq4u5f06r0" path="res://assets/basic blocks for lv 1.tres" id="1_hedt3"]
+[ext_resource type="TileSet" uid="uid://cksk5ljkq4gic" path="res://assets/basic blocks for lv 1.tres" id="1_hedt3"]
 
 [node name="map" type="Node2D"]
 

@@ -1,14 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://cbfsd2kstam7a"]
+[gd_scene load_steps=18 format=3 uid="uid://cbfsd2kstam7a"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_40d0q"]
-[ext_resource type="Texture2D" uid="uid://oaeqd2votei5" path="res://assets/samplecharacter.png" id="2_2l4pn"]
+[ext_resource type="Texture2D" uid="uid://bveckpd88apya" path="res://assets/Knight.png" id="2_c3tec"]
 [ext_resource type="Script" path="res://Scripts/grapple_controller.gd" id="3_jc1bc"]
 [ext_resource type="Texture2D" uid="uid://bkwj6q71hkxgh" path="res://assets/arror.png" id="4_5q5m2"]
 [ext_resource type="Texture2D" uid="uid://bghx6dsg57y56" path="res://assets/rope.png" id="4_vkmna"]
-[ext_resource type="Texture2D" uid="uid://bcnmdtksfbxt4" path="res://assets/debug_line_1.png" id="5_lnsk3"]
 [ext_resource type="Texture2D" uid="uid://dtrpljdbnu7ke" path="res://assets/debug_point_3.png" id="6_5yimb"]
 [ext_resource type="Texture2D" uid="uid://cffk1ori5w8a8" path="res://assets/debug_point_1.png" id="6_n6ia2"]
 [ext_resource type="Texture2D" uid="uid://dlmuu0ymrahax" path="res://assets/debug_point_2.png" id="7_1yv0o"]
+[ext_resource type="Texture2D" uid="uid://damaabrshx3uq" path="res://assets/BetterHook.png" id="9_xak1i"]
+[ext_resource type="Script" path="res://Scripts/hookanim.gd" id="10_rvivq"]
 
 [sub_resource type="Animation" id="Animation_y8cis"]
 length = 0.001
@@ -51,17 +52,57 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h6ijs"]
 size = Vector2(32, 32.25)
 
+[sub_resource type="Animation" id="Animation_wmu6t"]
+resource_name = "Rotate"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_kdek8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_amky6"]
+_data = {
+"RESET": SubResource("Animation_kdek8"),
+"Rotate": SubResource("Animation_wmu6t")
+}
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_40d0q")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_2l4pn")
-hframes = 2
+[node name="Playersprite" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+scale = Vector2(1.21875, 1.21875)
+texture = ExtResource("2_c3tec")
+vframes = 2
 frame = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Playersprite"]
 libraries = {
 "": SubResource("AnimationLibrary_at251")
 }
@@ -79,13 +120,6 @@ target_position = Vector2(10000, 0)
 
 [node name="Detection" type="RayCast2D" parent="GrappleController"]
 target_position = Vector2(10000, 0)
-
-[node name="detection_line" type="Line2D" parent="GrappleController/Detection"]
-visible = false
-points = PackedVector2Array(0, 0, 1000, 0)
-width = 30.0
-texture = ExtResource("5_lnsk3")
-texture_mode = 1
 
 [node name="Rope" type="Line2D" parent="GrappleController"]
 visibility_layer = 8
@@ -113,3 +147,19 @@ texture = ExtResource("7_1yv0o")
 
 [node name="debug_point_3" type="Sprite2D" parent="GrappleController"]
 texture = ExtResource("6_5yimb")
+
+[node name="Hooksprite" type="Sprite2D" parent="."]
+position = Vector2(-15, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_xak1i")
+hframes = 2
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Hooksprite"]
+libraries = {
+"": SubResource("AnimationLibrary_amky6")
+}
+speed_scale = 2.0
+script = ExtResource("10_rvivq")
+
+[node name="Camera2D" type="Camera2D" parent="."]

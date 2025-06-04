@@ -6,9 +6,13 @@ const ACCELERATION = 0.1
 const DECELERATION = 0.1
 
 @onready var gc := $GrappleController
+@onready var hookanim: AnimationPlayer = $Hooksprite/AnimationPlayer
+@onready var playeranim: AnimationPlayer = $Playersprite/AnimationPlayer
 
 var jumping = false
 
+
+	
 func _physics_process(delta):
 	if not is_on_floor():
 		jumping = false

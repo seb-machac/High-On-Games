@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcnmdtksfbxt4"
-path="res://.godot/imported/debug_line_1.png-97354429e017917668aa2daf3516a77f.ctex"
+uid="uid://damaabrshx3uq"
+path="res://.godot/imported/BetterHook.png-1f94a20200070f06a24b5d9faf1b9f55.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/debug_line_1.png"
-dest_files=["res://.godot/imported/debug_line_1.png-97354429e017917668aa2daf3516a77f.ctex"]
+source_file="res://assets/BetterHook.png"
+dest_files=["res://.godot/imported/BetterHook.png-1f94a20200070f06a24b5d9faf1b9f55.ctex"]
 
 [params]
 
