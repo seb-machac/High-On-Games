@@ -1,43 +1,43 @@
 extends Node2D
 
-@export var rest_length = 200.0
-@export var stiffness = 15.0
-@export var damping = 1.0
-@export var max_distance = 800.0
+@export var REST_LENGTH = 200.0
+@export var STIFFNESS = 15.0
+@export var DAMPING = 1.0
+@export var MAX_DISTANCE = 300.0
+var DISTANCE = 0
 
-@onready var player := get_parent()
-@onready var ray := $Ray
-@onready var rope := $Rope
-@onready var hook := $Sprite2D
-@onready var debug_line: Line2D = $debug_line
+@onready var ray: RayCast2D = $Ray
+@onready var player: CharacterBody2D = $".."
+@onready var rope: Line2D = $Rope
+@onready var hook: Sprite2D = $hook
 @onready var debug_point_1: Sprite2D = $debug_point_1
 @onready var debug_point_2: Sprite2D = $debug_point_2
 @onready var debug_point_3: Sprite2D = $debug_point_3
-@onready var playernode: CharacterBody2D = $".."
-@onready var detection: RayCast2D = $Detection
-@onready var detection_line: Line2D = $Detection/detection_line
 @onready var hookanim: AnimationPlayer = $"../Hooksprite/AnimationPlayer"
+@onready var detection: RayCast2D = $Detection
+@onready var distance_label: Label = $"../DebugMenu/VBoxContainer/Distance"
+@onready var max_distance_label: Label = $"../DebugMenu/VBoxContainer/Max_distance"
+@onready var rope_left_label: Label = $"../DebugMenu/VBoxContainer/rope_left"
+@onready var velocity_label: Label = $"../DebugMenu/VBoxContainer/velocitylabel"
+@onready var ui_output_1_label: Label = $"../DebugMenu/VBoxContainer/ui_output_1"
+@onready var ui_output_2_label: Label = $"../DebugMenu/VBoxContainer/ui_output_2"
 
-var targetpoint
+
 var launched = false
 var target: Vector2
-var distance = 0
-var distancestr = "0"
-var leftover_rope = "Leftover rope: ∞m"
-var ui_output_1 = "None"
-var ui_output_2 = "None"
+
+func _ready() -> void:
+	hook.visible = false
+	debug_point_3.visible = false
+	rope_left_label.text = "Leftover rope: "+str(MAX_DISTANCE)+"m"
+	max_distance_label.text = "Max distance: "+str(MAX_DISTANCE)+"m"
 
 
 func _process(delta):
-	targetpoint = Vector2(ray.get_collision_point().x, ray.get_collision_point().y).normalized()
 	if !detection.is_colliding() || detection.get_collision_point() != ray.get_collision_point():
-		ui_output_2 = "Cant shoot"
+		ui_output_2_label.text = "Cant shoot"
 	else:
-		ui_output_2 = "Can shoot"
-	if debug_line.points[0].distance_to(debug_line.points[1]) > max_distance:
-		debug_line.hide()
-	else:
-		debug_line.show()
+		ui_output_2_label.text = "Can shoot"
 	ray.look_at(get_global_mouse_position())
 	detection.look_at(get_global_mouse_position())
 	if Input.is_action_just_pressed("grapple"):
@@ -47,21 +47,21 @@ func _process(delta):
 	if launched:
 		handle_grapple(delta)
 	if ray.is_colliding():
-		distance = to_local(ray.get_collision_point()).distance_to(player.global_position)
-		distancestr = "Distance: "+ str(int(distance)) +"m"
+		DISTANCE = to_local(ray.get_collision_point()).distance_to(player.global_position)
+		distance_label.text = "Distance: "+ str(int(DISTANCE)) +"m"
 		debug_point_1.global_position = ray.get_collision_point()
 		debug_point_2.global_position = detection.get_collision_point()
 	else:
-		distancestr = "Distance: ∞m"
+		distance_label.text = "Distance: ∞m"
 
 
 func launch():
 	hookanim.play("Rotate")
-	if ray.is_colliding() and distance < max_distance:
+	if ray.is_colliding() and DISTANCE < MAX_DISTANCE:
 		if detection.get_collision_point() == ray.get_collision_point():
 			debug_point_2.global_position = detection.get_collision_point()
 			debug_point_3.global_position = ray.get_collision_point()
-			leftover_rope = "Leftover rope: "+str(max_distance-distance)+"m"
+			rope_left_label.text = "Leftover rope: "+str(MAX_DISTANCE-DISTANCE)+"m"
 			hook.visible = true
 			launched = true
 			target = ray.get_collision_point()
@@ -75,24 +75,25 @@ func retract():
 	launched = false
 	rope.hide()
 	hook.visible = false
-	leftover_rope = "Leftover rope: ∞m"
+	rope_left_label.text = "Leftover rope: "+str(MAX_DISTANCE)+"m"
+	debug_point_3.visible = false
 
 
 func handle_grapple(delta):
 	var target_dir = player.global_position.direction_to(target)
 	var target_dist = player.global_position.distance_to(target)
-	var displacement = target_dist - rest_length
+	var displacement = target_dist - REST_LENGTH
 	
 	var force = Vector2.ZERO
 	
 	if displacement > 0:
-		var spring_force_magnitude = stiffness * displacement
+		var spring_force_magnitude = STIFFNESS * displacement
 		var spring_force = target_dir * spring_force_magnitude
 		
 		var vel_dot = player.velocity.dot(target_dir)
-		var damping = -damping * vel_dot * target_dir
+		var DAMPING = -DAMPING * vel_dot * target_dir
 		
-		force = spring_force + damping
+		force = spring_force + DAMPING
 		
 	
 	player.velocity += force * delta

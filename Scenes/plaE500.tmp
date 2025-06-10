@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cbfsd2kstam7a"]
+[gd_scene load_steps=20 format=3 uid="uid://cbfsd2kstam7a"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_40d0q"]
 [ext_resource type="Texture2D" uid="uid://bveckpd88apya" path="res://assets/Knight.png" id="2_c3tec"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dlmuu0ymrahax" path="res://assets/debug_point_2.png" id="7_1yv0o"]
 [ext_resource type="Texture2D" uid="uid://damaabrshx3uq" path="res://assets/BetterHook.png" id="9_xak1i"]
 [ext_resource type="Script" path="res://addons/camera_2d_plus/objects/camera_2d_plus/camera_2d_plus_script.gd" id="10_ssxt6"]
+[ext_resource type="Script" path="res://Scripts/DebugMenu.gd" id="11_yl5h7"]
 
 [sub_resource type="Animation" id="Animation_y8cis"]
 length = 0.001
@@ -109,7 +110,6 @@ func _process(delta: float) -> void:
 collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_40d0q")
-JUMP_VELOCITY = -200.0
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -3)
@@ -128,8 +128,6 @@ shape = SubResource("RectangleShape2D_h6ijs")
 
 [node name="GrappleController" type="Node2D" parent="."]
 script = ExtResource("3_jc1bc")
-REST_LENGTH = 100.0
-MAX_DISTANCE = 500.0
 
 [node name="Ray" type="RayCast2D" parent="GrappleController"]
 light_mask = 3
@@ -181,10 +179,11 @@ script = ExtResource("10_ssxt6")
 [node name="DebugMenu" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -952.0
-offset_top = -518.0
-offset_right = -912.0
-offset_bottom = -478.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 44.0
+offset_bottom = 44.0
+script = ExtResource("11_yl5h7")
 metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DebugMenu"]
@@ -194,23 +193,23 @@ offset_bottom = 40.0
 
 [node name="Distance" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2
-text = "distance"
+text = "h"
 
 [node name="Max_distance" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2
-text = "max_distance"
+text = "b"
 
 [node name="rope_left" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2
-text = "rope left"
+text = "j"
 
 [node name="velocitylabel" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2
-text = "velocity"
+text = "j"
 
 [node name="ui_output_1" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2
-text = "ui output 1"
+text = "j"
 
 [node name="ui_output_2" type="Label" parent="DebugMenu/VBoxContainer"]
 layout_mode = 2

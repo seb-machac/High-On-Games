@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csjw8lmnh67nu"
-path="res://.godot/imported/Dirt.png-f7386bcbb1b325a79f83d3b15e64eb7e.ctex"
+uid="uid://bt5v4tumrjmkh"
+path="res://.godot/imported/plugin_icon.png-1571e90440d09aa0ad3025008f0a9a41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Dirt.png"
-dest_files=["res://.godot/imported/Dirt.png-f7386bcbb1b325a79f83d3b15e64eb7e.ctex"]
+source_file="res://addons/camera_2d_plus/images/plugin_icon/plugin_icon.png"
+dest_files=["res://.godot/imported/plugin_icon.png-1571e90440d09aa0ad3025008f0a9a41.ctex"]
 
 [params]
 

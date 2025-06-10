@@ -24,6 +24,10 @@ window/size/viewport_height=1080
 
 project/assembly_name="2D Grappling Hook"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/camera_2d_plus/plugin.cfg")
+
 [input]
 
 left={

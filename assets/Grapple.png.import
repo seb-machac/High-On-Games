@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csjw8lmnh67nu"
-path="res://.godot/imported/Dirt.png-f7386bcbb1b325a79f83d3b15e64eb7e.ctex"
+uid="uid://cseckruc3stxh"
+path="res://.godot/imported/Grapple.png-acfaaba7023dd55ce8d6e5530638bba6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Dirt.png"
-dest_files=["res://.godot/imported/Dirt.png-f7386bcbb1b325a79f83d3b15e64eb7e.ctex"]
+source_file="res://assets/Grapple.png"
+dest_files=["res://.godot/imported/Grapple.png-acfaaba7023dd55ce8d6e5530638bba6.ctex"]
 
 [params]
 
